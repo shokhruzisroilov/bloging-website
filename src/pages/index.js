@@ -1,0 +1,6 @@
+export { default as HomePage } from './home/HomePage'
+export { default as Login } from './auth/login/Login'
+export { default as SignUp } from './auth/signUp/SignUp'
+export { default as NotFoundPage } from './error/NotFoundPage'
+export { default as BlogDetail } from './blogDetail/blogDetail'
+export { default as Blogs } from './blog/Blogs'
