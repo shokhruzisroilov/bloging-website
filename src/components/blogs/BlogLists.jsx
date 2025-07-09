@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import blogsData from '../../utils/blogsData'
 import { Link } from 'react-router-dom'
+import LikeButton from '../header/LikeButton'
 
 const BlogLists = ({ isLimited = false }) => {
 	const navigate = useNavigate()
-
-	// limit check
 	const visibleBlogs = isLimited ? blogsData.slice(0, 6) : blogsData
 
 	return (
@@ -18,7 +17,10 @@ const BlogLists = ({ isLimited = false }) => {
 						className='group cursor-pointer'
 					>
 						<div className='w-full bg-white rounded-[20px] shadow-sm hover:shadow-md transition-all duration-300'>
-							<div className='w-full h-[200px] md:h-[220px] lg:h-[240px] rounded-t-[20px] overflow-hidden'>
+							<div className='relative w-full h-[200px] md:h-[220px] lg:h-[240px] rounded-t-[20px] overflow-hidden'>
+								{/* Like button */}
+								<LikeButton postId={blog.id} />
+
 								<img
 									src={blog.image}
 									alt={blog.title}
