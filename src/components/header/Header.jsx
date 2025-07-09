@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { navLinks } from '../../utils/navLinks'
 import { FiMenu, FiX } from 'react-icons/fi'
 
@@ -14,9 +14,11 @@ const Header = () => {
 		<header className='w-full bg-white shadow-sm relative z-50'>
 			<div className='container mx-auto px-4 md:px-10 py-4 flex items-center justify-between'>
 				{/* Logo */}
-				<h1 className='text-xl sm:text-2xl font-bold text-[#2F2222]'>
-					{`Shohruz's Blog`}
-				</h1>
+				<Link to='/'>
+					<h1 className='text-xl sm:text-2xl font-bold text-[#2F2222]'>
+						{`Shohruz's Blog`}
+					</h1>
+				</Link>
 
 				{/* Desktop Navigation */}
 				<nav className='hidden md:flex items-center gap-8 lg:gap-12'>

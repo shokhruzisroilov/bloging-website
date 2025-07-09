@@ -6,9 +6,10 @@ const Hero = () => {
 					Welcome to <span className='text-[#5D71DD]'>My Blog</span>
 				</h1>
 				<p className='text-base sm:text-lg md:text-xl text-[#333] leading-relaxed max-w-3xl mx-auto'>
-					{`Explore insightful articles, helpful tutorials, and stories that
-					inspire growth. Whether you're into tech, design, or personal
-					development — there's something here for you.`}
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
+					harum eligendi voluptatum at, exercitationem unde ipsa hic cum vel
+					laborum minima, reprehenderit voluptas doloribus? Ipsa vel sit
+					consectetur officia rem!
 				</p>
 			</div>
 		</section>

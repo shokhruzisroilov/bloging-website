@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { navLinks } from '../../utils/navLinks'
 import {
 	FaFacebookF,
@@ -13,9 +13,11 @@ const Footer = () => {
 			<div className='container mx-auto flex flex-col gap-10 md:flex-row md:items-center md:justify-between'>
 				{/* Left: Logo */}
 				<div className='text-center md:text-left'>
-					<h1 className='text-2xl font-bold text-[#2F2222]'>
-						{`Shohruz's Blog`}
-					</h1>
+					<Link to='/'>
+						<h1 className='text-2xl font-bold text-[#2F2222]'>
+							{`Shohruz's Blog`}
+						</h1>
+					</Link>
 				</div>
 
 				{/* Center: Nav Links */}
