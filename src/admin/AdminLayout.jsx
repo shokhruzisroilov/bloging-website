@@ -8,31 +8,38 @@ const AdminLayout = () => {
 
 	useEffect(() => {
 		const handleResize = () => {
-			if (window.innerWidth < 768) {
-				setIsSidebarOpen(false)
-			} else {
-				setIsSidebarOpen(true)
-			}
+			setIsSidebarOpen(window.innerWidth >= 768)
 		}
-
 		window.addEventListener('resize', handleResize)
-
-		// Cleanup
-		return () => {
-			window.removeEventListener('resize', handleResize)
-		}
+		return () => window.removeEventListener('resize', handleResize)
 	}, [])
 
 	return (
-		<div className='flex min-h-screen overflow-x-hidden'>
-			{isSidebarOpen && <AdminSidebar />}
-			<div className='flex flex-col flex-1'>
+		<div className='flex min-h-screen relative'>
+			{/* Sidebar */}
+			<div
+				className={`fixed z-40 top-0 left-0 h-full transition-transform duration-300 ease-in-out ${
+					isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+				} md:relative md:translate-x-0`}
+			>
+				<AdminSidebar />
+			</div>
+
+			{/* Overlay for mobile */}
+			{isSidebarOpen && window.innerWidth < 768 && (
+				<div
+					className='fixed inset-0 bg-black bg-opacity-40 z-30'
+					onClick={() => setIsSidebarOpen(false)}
+				></div>
+			)}
+
+			<div className='flex flex-col flex-1 min-w-0'>
 				<AdminHeader
-					toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+					toggleSidebar={() => setIsSidebarOpen(prev => !prev)}
 					isSidebarOpen={isSidebarOpen}
 					userName='Shohruz'
 				/>
-				<main className='flex-1 p-6 bg-gray-50'>
+				<main className='flex-1 p-4 bg-gray-50 overflow-hidden'>
 					<Outlet />
 				</main>
 			</div>

@@ -5,7 +5,8 @@ const BlogsDashboard = () => {
 	const [blogs, setBlogs] = useState(
 		Array.from({ length: 10 }).map((_, i) => ({
 			id: i + 1,
-			image: 'https://via.placeholder.com/80',
+			image:
+				'https://media.istockphoto.com/id/887987150/photo/blogging-woman-reading-blog.jpg?s=612x612&w=0&k=20&c=7SScR_Y4n7U3k5kBviYm3VwEmW4vmbngDUa0we429GA=',
 			category: 'Frontend',
 			date: '2025-07-09',
 			title: `Blog Post ${i + 1}`,
@@ -60,7 +61,7 @@ const BlogsDashboard = () => {
 
 	return (
 		<>
-			<div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6'>
+			<div className='flex  justify-between items-center gap-4 mb-6'>
 				<h1 className='text-2xl font-semibold'>Blogs</h1>
 				<button
 					onClick={openAddModal}
@@ -71,60 +72,65 @@ const BlogsDashboard = () => {
 			</div>
 
 			{/* Table */}
-			<div className=''>
-				<div className='w-full overflow-x-auto border border-gray-300 rounded-lg'>
-					<table className='w-full table-auto border-collapse text-sm'>
-						<thead className='bg-gray-100'>
-							<tr>
-								<th className='px-4 py-2 border text-left'>Image</th>
-								<th className='px-4 py-2 border text-left'>Category</th>
-								<th className='px-4 py-2 border text-left'>Date</th>
-								<th className='px-4 py-2 border text-left'>Title</th>
-								<th className='px-4 py-2 border text-left'>Description</th>
-								<th className='px-4 py-2 border text-left'>Actions</th>
+			<div className='overflow-x-auto max-h-[70vh] overflow-y-auto border border-gray-200 rounded-lg shadow-sm'>
+				<table className='min-w-full text-sm text-left bg-white'>
+					<thead className='bg-gray-100 text-gray-600 font-semibold'>
+						<tr>
+							<th className='px-4 py-3 border'>#</th>
+							<th className='px-4 py-3 border'>Image</th>
+							<th className='px-4 py-3 border'>Category</th>
+							<th className='px-4 py-3 border'>Date</th>
+							<th className='px-4 py-3 border'>Title</th>
+							<th className='px-4 py-3 border'>Description</th>
+							<th className='px-4 py-3 border'>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{blogs.map((blog, index) => (
+							<tr
+								key={blog.id}
+								className='hover:bg-gray-50 transition-colors border-t'
+							>
+								<td className='px-4 py-3'>{index + 1}</td>
+								<td className='px-4 py-3'>
+									<img
+										src={blog.image}
+										alt={blog.title}
+										className='w-14 h-14 object-cover rounded'
+									/>
+								</td>
+								<td className='px-4 py-3 text-sm whitespace-nowrap'>
+									{blog.category}
+								</td>
+								<td className='px-4 py-3 text-sm whitespace-nowrap'>
+									{blog.date}
+								</td>
+								<td className='px-4 py-3 text-sm max-w-[150px] break-words min-w-40'>
+									{blog.title}
+								</td>
+								<td className='px-4 py-3 text-sm max-w-[200px] break-words line-clamp-2 min-w-40'>
+									{blog.description}
+								</td>
+								<td className='px-4 py-3'>
+									<div className='flex gap-2'>
+										<button
+											onClick={() => openEditModal(blog)}
+											className='text-blue-600 hover:text-blue-800'
+										>
+											<Pencil size={16} />
+										</button>
+										<button
+											onClick={() => handleDelete(blog.id)}
+											className='text-red-600 hover:text-red-800'
+										>
+											<Trash2 size={16} />
+										</button>
+									</div>
+								</td>
 							</tr>
-						</thead>
-						<tbody>
-							{blogs.map(blog => (
-								<tr key={blog.id} className='hover:bg-gray-50'>
-									<td className='px-4 py-2 border'>
-										<img
-											src={blog.image}
-											alt={blog.title}
-											className='w-16 h-16 object-cover rounded'
-										/>
-									</td>
-									<td className='px-4 py-2 border break-words max-w-[120px]'>
-										{blog.category}
-									</td>
-									<td className='px-4 py-2 border'>{blog.date}</td>
-									<td className='px-4 py-2 border break-words max-w-[150px]'>
-										{blog.title}
-									</td>
-									<td className='px-4 py-2 border break-words max-w-[200px] line-clamp-2'>
-										{blog.description}
-									</td>
-									<td className='px-4 py-2 border'>
-										<div className='flex gap-2'>
-											<button
-												onClick={() => openEditModal(blog)}
-												className='text-blue-600 hover:text-blue-800'
-											>
-												<Pencil size={16} />
-											</button>
-											<button
-												onClick={() => handleDelete(blog.id)}
-												className='text-red-600 hover:text-red-800'
-											>
-												<Trash2 size={16} />
-											</button>
-										</div>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
+						))}
+					</tbody>
+				</table>
 			</div>
 
 			{/* Modal */}
