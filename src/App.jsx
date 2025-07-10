@@ -26,9 +26,9 @@ const App = () => {
 					<Route path='blog' element={<Blogs />} />
 					<Route path='blog/:id' element={<BlogDetail />} />
 					<Route path='login' element={<Login />} />
-					<Route path='signup' element={<SignUp />} />
-					<Route path='*' element={<NotFoundPage />} />
+					<Route path='sign-up' element={<SignUp />} />
 				</Route>
+				<Route path='*' element={<NotFoundPage />} />
 
 				{/* Admin routes  */}
 				<Route path='/admin' element={<AdminLayout />}>

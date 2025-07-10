@@ -4,7 +4,7 @@ const Blogs = () => {
 	return (
 		<div>
 			{/* Hero Section */}
-			<section className='w-full bg-[#f2f2f2] py-16 px-4'>
+			<section className='w-full bg-[#f2f2f2] pb-20 pt-40 px-4'>
 				<div className='max-w-4xl mx-auto text-center'>
 					<h1 className='text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2F2222] mb-6 leading-snug'>
 						All Blog Posts

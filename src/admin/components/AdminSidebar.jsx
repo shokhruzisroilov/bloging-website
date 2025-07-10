@@ -17,7 +17,7 @@ const AdminSidebar = () => {
 	return (
 		<aside className='w-[240px] min-h-screen bg-[#4B5CD2] text-white p-6 shadow-md flex flex-col justify-between'>
 			<div>
-				<h2 className='text-2xl font-semibold mb-8 tracking-wide'>
+				<h2 className='text-2xl font-semibold mb-8 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis'>
 					Admin Panel
 				</h2>
 				<nav className='flex flex-col gap-2'>

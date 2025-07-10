@@ -4,24 +4,31 @@ import { useState } from 'react'
 
 const BlogDetail = () => {
 	const { id } = useParams()
+
+	// Find the blog post by its ID from mock data
 	const blog = blogsData.find(item => item.id === Number(id))
 
+	// Local state for handling comments
 	const [comments, setComments] = useState([])
 	const [commentText, setCommentText] = useState('')
 
+	// Handle comment submission
 	const handleSubmit = e => {
 		e.preventDefault()
 		if (commentText.trim()) {
-			setComments([...comments, commentText])
+			setComments(prev => [...prev, commentText.trim()])
 			setCommentText('')
 		}
 	}
 
-	if (!blog) return <div className='p-10 text-center'>Blog not found.</div>
+	// If no blog is found
+	if (!blog) {
+		return <div className='p-10 text-center text-lg'>Blog not found.</div>
+	}
 
 	return (
-		<div className='container mx-auto px-4 py-10 max-w-4xl'>
-			{/* Image */}
+		<div className='container mx-auto px-4 pt-40 max-w-4xl'>
+			{/* Blog Image */}
 			<div className='w-full max-h-[400px] md:h-[450px] lg:h-[500px] rounded-xl overflow-hidden mb-8'>
 				<img
 					src={blog.image}
@@ -38,10 +45,10 @@ const BlogDetail = () => {
 				<span>{blog.date}</span>
 			</div>
 
-			{/* Title */}
+			{/* Blog Title */}
 			<h1 className='text-3xl font-bold text-gray-900 mb-4'>{blog.title}</h1>
 
-			{/* Full Description (Fake text here) */}
+			{/* Blog Description / Body */}
 			<p className='text-gray-700 leading-relaxed mb-10'>
 				{blog.description} Lorem ipsum dolor sit amet, consectetur adipisicing
 				elit. Quis, dolores. Tempore optio exercitationem repellendus aspernatur
@@ -49,16 +56,18 @@ const BlogDetail = () => {
 				deleniti assumenda aspernatur dolorum.
 			</p>
 
-			{/* Comment Form */}
+			{/* Comment Section */}
 			<div className='mt-12 border-t pt-8'>
 				<h2 className='text-xl font-semibold mb-4'>Leave a Comment</h2>
+
+				{/* Comment Form */}
 				<form onSubmit={handleSubmit} className='flex flex-col gap-4'>
 					<textarea
 						value={commentText}
 						onChange={e => setCommentText(e.target.value)}
 						rows='4'
 						placeholder='Write your comment here...'
-						className='w-full p-4 border border-gray-300 rounded-md resize-none focus:outline-[#5D71DD]'
+						className='w-full p-4 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-[#5D71DD] transition'
 					/>
 					<button
 						type='submit'
@@ -68,7 +77,7 @@ const BlogDetail = () => {
 					</button>
 				</form>
 
-				{/* Show Comments */}
+				{/* Display Comments */}
 				{comments.length > 0 && (
 					<div className='mt-8'>
 						<h3 className='text-lg font-medium mb-2'>Comments</h3>

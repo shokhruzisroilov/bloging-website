@@ -2,24 +2,16 @@ import { useState } from 'react'
 import { Pencil, Trash2, PlusCircle, X } from 'lucide-react'
 
 const BlogsDashboard = () => {
-	const [blogs, setBlogs] = useState([
-		{
-			id: 1,
-			image: 'https://via.placeholder.com/100',
+	const [blogs, setBlogs] = useState(
+		Array.from({ length: 10 }).map((_, i) => ({
+			id: i + 1,
+			image: 'https://via.placeholder.com/80',
 			category: 'Frontend',
 			date: '2025-07-09',
-			title: 'React Best Practices',
-			description: 'Learn how to write clean and maintainable React code.',
-		},
-		{
-			id: 2,
-			image: 'https://via.placeholder.com/100',
-			category: 'Frontend',
-			date: '2025-07-09',
-			title: 'React Best Practices',
-			description: 'Learn how to write clean and maintainable React code.',
-		},
-	])
+			title: `Blog Post ${i + 1}`,
+			description: 'This is a sample description for the blog post.',
+		}))
+	)
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [editBlog, setEditBlog] = useState(null)
@@ -78,63 +70,61 @@ const BlogsDashboard = () => {
 				</button>
 			</div>
 
-			<div className='w-full overflow-x-auto'>
-				<table className='min-w-[900px] w-full border border-gray-300 text-left text-sm'>
-					<thead className='bg-gray-100'>
-						<tr>
-							<th className='p-3 border'>#</th>
-							<th className='p-3 border'>Image</th>
-							<th className='p-3 border'>Category</th>
-							<th className='p-3 border'>Date</th>
-							<th className='p-3 border'>Title</th>
-							<th className='p-3 border'>Description</th>
-							<th className='p-3 border'>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{blogs.map((blog, idx) => (
-							<tr key={blog.id} className='hover:bg-gray-50'>
-								<td className='p-3 border'>{idx + 1}</td>
-								<td className='p-3 border'>
-									<img
-										src={blog.image}
-										alt='blog'
-										className='w-16 h-16 object-cover rounded'
-									/>
-								</td>
-								<td className='p-3 border'>{blog.category}</td>
-								<td className='p-3 border'>{blog.date}</td>
-								<td className='p-3 border font-medium'>{blog.title}</td>
-								<td className='p-3 border max-w-[220px] line-clamp-2'>
-									{blog.description}
-								</td>
-								<td className='p-3 border'>
-									<div className='flex gap-3'>
-										<button
-											onClick={() => openEditModal(blog)}
-											className='text-blue-600 hover:text-blue-800'
-										>
-											<Pencil size={18} />
-										</button>
-										<button
-											onClick={() => handleDelete(blog.id)}
-											className='text-red-600 hover:text-red-800'
-										>
-											<Trash2 size={18} />
-										</button>
-									</div>
-								</td>
-							</tr>
-						))}
-						{blogs.length === 0 && (
+			{/* Table */}
+			<div className=''>
+				<div className='w-full overflow-x-auto border border-gray-300 rounded-lg'>
+					<table className='w-full table-auto border-collapse text-sm'>
+						<thead className='bg-gray-100'>
 							<tr>
-								<td colSpan={7} className='text-center p-4 text-gray-500'>
-									No blogs found.
-								</td>
+								<th className='px-4 py-2 border text-left'>Image</th>
+								<th className='px-4 py-2 border text-left'>Category</th>
+								<th className='px-4 py-2 border text-left'>Date</th>
+								<th className='px-4 py-2 border text-left'>Title</th>
+								<th className='px-4 py-2 border text-left'>Description</th>
+								<th className='px-4 py-2 border text-left'>Actions</th>
 							</tr>
-						)}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{blogs.map(blog => (
+								<tr key={blog.id} className='hover:bg-gray-50'>
+									<td className='px-4 py-2 border'>
+										<img
+											src={blog.image}
+											alt={blog.title}
+											className='w-16 h-16 object-cover rounded'
+										/>
+									</td>
+									<td className='px-4 py-2 border break-words max-w-[120px]'>
+										{blog.category}
+									</td>
+									<td className='px-4 py-2 border'>{blog.date}</td>
+									<td className='px-4 py-2 border break-words max-w-[150px]'>
+										{blog.title}
+									</td>
+									<td className='px-4 py-2 border break-words max-w-[200px] line-clamp-2'>
+										{blog.description}
+									</td>
+									<td className='px-4 py-2 border'>
+										<div className='flex gap-2'>
+											<button
+												onClick={() => openEditModal(blog)}
+												className='text-blue-600 hover:text-blue-800'
+											>
+												<Pencil size={16} />
+											</button>
+											<button
+												onClick={() => handleDelete(blog.id)}
+												className='text-red-600 hover:text-red-800'
+											>
+												<Trash2 size={16} />
+											</button>
+										</div>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
 			</div>
 
 			{/* Modal */}
