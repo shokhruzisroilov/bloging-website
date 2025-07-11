@@ -2,16 +2,35 @@ import { useEffect, useState } from 'react'
 import AdminSidebar from './components/AdminSidebar'
 import AdminHeader from './components/AdminHeader'
 import { Outlet } from 'react-router-dom'
+import { getCurrentUser } from '../services/authService'
 
 const AdminLayout = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 768)
+	const [userName, setUserName] = useState('')
 
 	useEffect(() => {
+		// responsivlik uchun
 		const handleResize = () => {
 			setIsSidebarOpen(window.innerWidth >= 768)
 		}
 		window.addEventListener('resize', handleResize)
 		return () => window.removeEventListener('resize', handleResize)
+	}, [])
+
+	useEffect(() => {
+		// foydalanuvchini olish
+		const fetchUser = async () => {
+			try {
+				const data = await getCurrentUser()
+				// console.log(data)
+				setUserName(data?.name || data?.username || 'Admin')
+			} catch (err) {
+				console.error('User fetch error', err)
+				setUserName('Admin')
+			}
+		}
+
+		fetchUser()
 	}, [])
 
 	return (
@@ -37,7 +56,7 @@ const AdminLayout = () => {
 				<AdminHeader
 					toggleSidebar={() => setIsSidebarOpen(prev => !prev)}
 					isSidebarOpen={isSidebarOpen}
-					userName='Shohruz'
+					userName={userName}
 				/>
 				<main className='flex-1 p-4 bg-gray-50 overflow-hidden'>
 					<Outlet />

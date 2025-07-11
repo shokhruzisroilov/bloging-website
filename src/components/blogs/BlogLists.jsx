@@ -8,7 +8,7 @@ const BlogLists = ({ isLimited = false }) => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const { blogs, loading, error } = useSelector(state => state.blogs)
-	console.log(blogs)
+	// console.log(blogs)
 
 	useEffect(() => {
 		dispatch(fetchBlogs())
@@ -36,11 +36,7 @@ const BlogLists = ({ isLimited = false }) => {
 
 								<Link to={`/blog/${blog.id}`}>
 									<img
-										src={
-											blog.images
-												? `http://192.168.12.239:8000/${blog.images}`
-												: 'https://www.shutterstock.com/image-photo/bloggingblog-concepts-ideas-white-worktable-260nw-1029506242.jpg'
-										}
+										src={blog.images}
 										alt={blog.title}
 										className='w-full h-full object-cover group-hover:scale-105 transition duration-300'
 									/>
