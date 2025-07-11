@@ -24,7 +24,7 @@ const Footer = () => {
 				<nav>
 					<ul className='flex flex-wrap justify-center md:justify-center gap-6 text-[#2F2222] font-medium'>
 						{navLinks.map(item => (
-							<li key={item.id}>
+							<li key={item.title}>
 								<NavLink
 									to={item.href}
 									className='hover:text-[#5D71DD] hover:underline transition duration-200'

@@ -4,34 +4,34 @@ import { Heart } from 'lucide-react'
 const LikeButton = ({ postId }) => {
 	const [liked, setLiked] = useState(false)
 
-	// On mount: Check if the post is already liked in localStorage
+	// On component mount: Check if the post is already liked (from localStorage)
 	useEffect(() => {
-		const stored = localStorage.getItem(`liked-${postId}`)
-		setLiked(stored === 'true')
+		const likedPosts = JSON.parse(localStorage.getItem('liked_posts')) || []
+		setLiked(likedPosts.includes(postId))
 	}, [postId])
 
-	// Toggle like/unlike status
-	const toggleLike = e => {
-		e.preventDefault()
-		const newLiked = !liked
-		setLiked(newLiked)
-		localStorage.setItem(`liked-${postId}`, newLiked.toString())
+	const toggleLike = () => {
+		let likedPosts = JSON.parse(localStorage.getItem('liked_posts')) || []
+
+		if (liked) {
+			// If already liked, remove it from the list
+			likedPosts = likedPosts.filter(id => id !== postId)
+		} else {
+			// Otherwise, add the post ID to likedPosts
+			likedPosts.push(postId)
+		}
+
+		// Save the updated likedPosts list to localStorage
+		localStorage.setItem('liked_posts', JSON.stringify(likedPosts))
+		setLiked(!liked)
 	}
 
 	return (
 		<button
 			onClick={toggleLike}
-			className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-all shadow-md ${
-				liked ? 'bg-red-500 hover:bg-red-600' : 'bg-white hover:bg-gray-100'
-			}`}
-			title={liked ? 'Unlike' : 'Like'}
-			aria-label={liked ? 'Unlike this post' : 'Like this post'}
+			className='absolute top-3 right-3 z-50 text-[#5D71DD] hover:text-red-500 transition-all'
 		>
-			<Heart
-				className={`w-5 h-5 transition-colors ${
-					liked ? 'text-white' : 'text-gray-400'
-				}`}
-			/>
+			<Heart fill={liked ? 'red' : 'none'} />
 		</button>
 	)
 }

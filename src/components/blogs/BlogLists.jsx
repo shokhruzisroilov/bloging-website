@@ -1,67 +1,71 @@
-import { useNavigate } from 'react-router-dom'
-import blogsData from '../../utils/blogsData'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, Link } from 'react-router-dom'
+import { fetchBlogs } from '../../redux/blogs/blogSlice'
 import LikeButton from '../header/LikeButton'
 
 const BlogLists = ({ isLimited = false }) => {
+	const dispatch = useDispatch()
 	const navigate = useNavigate()
+	const { blogs, loading, error } = useSelector(state => state.blogs)
+	console.log(blogs)
 
-	// Show only 6 blogs if limited mode (e.g., Home page)
-	const visibleBlogs = isLimited ? blogsData.slice(0, 6) : blogsData
+	useEffect(() => {
+		dispatch(fetchBlogs())
+	}, [dispatch])
+
+	const visibleBlogs = isLimited
+		? [...blogs].reverse().slice(0, 6)
+		: [...blogs].reverse()
+
+	if (loading) return <p className='text-center'>Loading...</p>
+	if (error) return <p className='text-center text-red-500'>Error: {error}</p>
 
 	return (
 		<div>
-			{/* Blog Grid */}
 			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
-				{visibleBlogs.map(blog => (
-					<Link
-						to={`/blog/${blog.id}`}
-						key={blog.id}
-						className='group cursor-pointer'
-					>
-						{/* Blog Card */}
+				{visibleBlogs.map((blog, index) => (
+					<div key={`${blog.id}-${index}`} className='group cursor-pointer'>
 						<div className='w-full bg-white rounded-[20px] shadow-sm hover:shadow-md transition-all duration-300'>
-							{/* Blog Image with Like Button */}
+							{/* Image + LikeButton */}
 							<div className='relative w-full h-[200px] md:h-[220px] lg:h-[240px] rounded-t-[20px] overflow-hidden'>
-								<LikeButton postId={blog.id} />
-								<img
-									src={blog.image}
-									alt={blog.title}
-									className='w-full h-full object-cover group-hover:scale-105 transition duration-300'
-								/>
-							</div>
-
-							{/* Blog Content */}
-							<div className='p-6 flex flex-col gap-3'>
-								{/* Category and Date */}
-								<div className='flex items-center justify-between text-sm'>
-									<span className='px-3 py-1 bg-[#F7F8FD] text-[#5D71DD] rounded-md font-medium'>
-										{blog.category}
-									</span>
-									<span className='text-gray-500'>{blog.date}</span>
+								{/* Like Button in top-right corner */}
+								<div className='absolute top-2 right-2 z-10'>
+									<LikeButton postId={blog.id} />
 								</div>
 
-								{/* Blog Title */}
+								<Link to={`/blog/${blog.id}`}>
+									<img
+										src={
+											blog.images
+												? `http://192.168.12.239:8000/${blog.images}`
+												: 'https://www.shutterstock.com/image-photo/bloggingblog-concepts-ideas-white-worktable-260nw-1029506242.jpg'
+										}
+										alt={blog.title}
+										className='w-full h-full object-cover group-hover:scale-105 transition duration-300'
+									/>
+								</Link>
+							</div>
+
+							{/* Content */}
+							<div className='p-6 flex flex-col gap-3'>
 								<h3 className='text-lg md:text-xl font-semibold text-gray-900'>
-									{blog.title.length > 50
+									{blog.title?.length > 50
 										? blog.title.slice(0, 50) + '...'
 										: blog.title}
 								</h3>
-
-								{/* Blog Description */}
 								<p className='text-gray-600 text-sm md:text-base leading-relaxed'>
-									{blog.description.length > 100
-										? blog.description.slice(0, 100) + '...'
-										: blog.description}
+									{blog.content?.length > 100
+										? blog.content.slice(0, 100) + '...'
+										: blog.content}
 								</p>
 							</div>
 						</div>
-					</Link>
+					</div>
 				))}
 			</div>
 
-			{/* "See More" Button (only for home page when limited is true) */}
-			{isLimited && blogsData.length > 6 && (
+			{isLimited && blogs.length > 6 && (
 				<div className='mt-10 flex justify-center'>
 					<button
 						onClick={() => navigate('/blog')}

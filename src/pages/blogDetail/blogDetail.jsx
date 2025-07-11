@@ -1,62 +1,87 @@
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import blogsData from '../../utils/blogsData'
-import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchBlogs } from '../../redux/blogs/blogSlice'
+import { createComment, fetchComments } from '../../redux/blogs/commentSlice'
 
 const BlogDetail = () => {
 	const { id } = useParams()
+	const dispatch = useDispatch()
 
-	// Find the blog post by its ID from mock data
-	const blog = blogsData.find(item => item.id === Number(id))
+	const {
+		blogs,
+		loading: blogsLoading,
+		error: blogsError,
+	} = useSelector(state => state.blogs)
 
-	// Local state for handling comments
-	const [comments, setComments] = useState([])
+	const {
+		comments,
+		loading: commentsLoading,
+		error: commentsError,
+	} = useSelector(state => state.comments)
+
 	const [commentText, setCommentText] = useState('')
 
-	// Handle comment submission
-	const handleSubmit = e => {
+	// Fetch blogs if not loaded
+	useEffect(() => {
+		if (blogs.length === 0) {
+			dispatch(fetchBlogs())
+		}
+	}, [blogs.length, dispatch])
+
+	// Fetch comments
+	useEffect(() => {
+		dispatch(fetchComments())
+	}, [dispatch])
+
+	// Find blog by ID
+	const blog = blogs.find(item => item.id === Number(id))
+
+	// Filter comments for this blog
+	const blogComments = comments.filter(c => c.post_id === Number(id))
+
+	// Submit new comment
+	const handleSubmit = async e => {
 		e.preventDefault()
 		if (commentText.trim()) {
-			setComments(prev => [...prev, commentText.trim()])
+			const newComment = {
+				text: commentText.trim(),
+				user_id: 11,
+				post_id: Number(id),
+			}
+
+			await dispatch(createComment(newComment))
+			dispatch(fetchComments())
 			setCommentText('')
 		}
 	}
 
-	// If no blog is found
-	if (!blog) {
-		return <div className='p-10 text-center text-lg'>Blog not found.</div>
-	}
+	if (blogsLoading) return <p className='text-center'>Loading blog...</p>
+	if (blogsError)
+		return <p className='text-red-500 text-center'>Error: {blogsError}</p>
+	if (!blog) return <p className='text-center pt-40'>Blog not found.</p>
 
 	return (
 		<div className='container mx-auto px-4 pt-40 max-w-4xl'>
 			{/* Blog Image */}
 			<div className='w-full max-h-[400px] md:h-[450px] lg:h-[500px] rounded-xl overflow-hidden mb-8'>
 				<img
-					src={blog.image}
+					src={
+						blog.images ||
+						'https://www.shutterstock.com/image-photo/bloggingblog-concepts-ideas-white-worktable-260nw-1029506242.jpg'
+					}
 					alt={blog.title}
 					className='w-full h-full object-cover'
 				/>
 			</div>
 
-			{/* Category and Date */}
-			<div className='flex items-center justify-between mb-4 text-sm text-gray-600'>
-				<span className='bg-[#F7F8FD] text-[#5D71DD] px-3 py-1 rounded-md font-medium'>
-					{blog.category}
-				</span>
-				<span>{blog.date}</span>
-			</div>
-
 			{/* Blog Title */}
 			<h1 className='text-3xl font-bold text-gray-900 mb-4'>{blog.title}</h1>
 
-			{/* Blog Description / Body */}
-			<p className='text-gray-700 leading-relaxed mb-10'>
-				{blog.description} Lorem ipsum dolor sit amet, consectetur adipisicing
-				elit. Quis, dolores. Tempore optio exercitationem repellendus aspernatur
-				sint! Facere, rerum. Commodi in ad esse voluptate facilis atque a
-				deleniti assumenda aspernatur dolorum.
-			</p>
+			{/* Blog Content */}
+			<p className='text-gray-700 leading-relaxed mb-10'>{blog.content}</p>
 
-			{/* Comment Section */}
+			{/* Comments Section */}
 			<div className='mt-12 border-t pt-8'>
 				<h2 className='text-xl font-semibold mb-4'>Leave a Comment</h2>
 
@@ -77,17 +102,24 @@ const BlogDetail = () => {
 					</button>
 				</form>
 
-				{/* Display Comments */}
-				{comments.length > 0 && (
+				{/* Comments List */}
+				{commentsLoading && (
+					<p className='text-gray-500 mt-4'>Loading comments...</p>
+				)}
+				{commentsError && (
+					<p className='text-red-500 mt-4'>Error: {commentsError}</p>
+				)}
+
+				{blogComments.length > 0 && (
 					<div className='mt-8'>
 						<h3 className='text-lg font-medium mb-2'>Comments</h3>
 						<ul className='flex flex-col gap-3'>
-							{comments.map((comment, index) => (
+							{blogComments.map(comment => (
 								<li
-									key={index}
+									key={comment.id}
 									className='bg-[#f9f9f9] px-4 py-3 rounded-md border text-gray-700'
 								>
-									{comment}
+									{comment.text}
 								</li>
 							))}
 						</ul>

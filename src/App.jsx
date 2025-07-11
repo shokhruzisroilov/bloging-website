@@ -4,37 +4,44 @@ import {
 	BlogDetail,
 	Blogs,
 	HomePage,
+	Likes,
 	Login,
 	NotFoundPage,
+	Profile,
 	SignUp,
 } from './pages'
 import ScrollToTop from './components/ScrollToTop'
-
-// Admin components
 import AdminLayout from './admin/AdminLayout'
 import Dashboard from './admin/pages/Dashboard'
 import BlogsDashboard from './admin/pages/BlogsDashboard'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const App = () => {
 	return (
 		<Router>
 			<ScrollToTop />
 			<Routes>
-				{/* User routes  */}
 				<Route path='/' element={<Layout />}>
 					<Route index element={<HomePage />} />
 					<Route path='blog' element={<Blogs />} />
 					<Route path='blog/:id' element={<BlogDetail />} />
 					<Route path='login' element={<Login />} />
 					<Route path='sign-up' element={<SignUp />} />
+					<Route path='profile' element={<Profile />} />
+					<Route path='likes' element={<Likes />} />
 				</Route>
-				<Route path='*' element={<NotFoundPage />} />
-
-				{/* Admin routes  */}
-				<Route path='/admin' element={<AdminLayout />}>
+				<Route
+					path='/admin'
+					element={
+						<ProtectedRoute requiredRole='admin'>
+							<AdminLayout />
+						</ProtectedRoute>
+					}
+				>
 					<Route index element={<Dashboard />} />
 					<Route path='blogs' element={<BlogsDashboard />} />
 				</Route>
+				<Route path='*' element={<NotFoundPage />} />
 			</Routes>
 		</Router>
 	)
