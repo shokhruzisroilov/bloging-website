@@ -1,5 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Newspaper, LogOut } from 'lucide-react'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../redux/auth/authSlice'
 
 const links = [
 	{ name: 'Dashboard', path: '/admin', icon: <LayoutDashboard size={18} /> },
@@ -8,9 +10,10 @@ const links = [
 
 const AdminSidebar = () => {
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
 
 	const handleLogout = () => {
-		localStorage.removeItem('token')
+		dispatch(logout())
 		navigate('/login')
 	}
 
@@ -41,7 +44,6 @@ const AdminSidebar = () => {
 				</nav>
 			</div>
 
-			{/* Logout Button */}
 			<button
 				onClick={handleLogout}
 				className='mt-8 flex items-center gap-3 px-4 py-2 rounded-md text-white hover:bg-[#3f4ec1] transition-all duration-200'
