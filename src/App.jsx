@@ -3,6 +3,7 @@ import Layout from './layout/Layout'
 import {
 	BlogDetail,
 	Blogs,
+	Contact,
 	HomePage,
 	Likes,
 	Login,
@@ -26,6 +27,7 @@ const App = () => {
 					<Route path='blog' element={<Blogs />} />
 					<Route path='blog/:id' element={<BlogDetail />} />
 					<Route path='login' element={<Login />} />
+					<Route path='contact' element={<Contact />} />
 					<Route path='sign-up' element={<SignUp />} />
 					<Route path='profile' element={<Profile />} />
 					<Route path='likes' element={<Likes />} />
