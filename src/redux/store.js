@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import blogReducer from './blogs/blogSlice'
 import commentReducer from './blogs/commentSlice'
-import likeReducer from './blogs/likeSlice'
+import likeReducer from './likes/likeSlice'
 import authReducer from './auth/authSlice'
 
 export const store = configureStore({

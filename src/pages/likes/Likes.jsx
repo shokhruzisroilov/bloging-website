@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchBlogs } from '../../redux/blogs/blogSlice'
+import { fetchLikes } from '../../redux/likes/likeSlice'
 
 const Likes = () => {
 	const dispatch = useDispatch()
 	const { blogs, loading, error } = useSelector(state => state.blogs)
-	const [likedPostIds, setLikedPostIds] = useState([])
+	const { likedPostIds } = useSelector(state => state.likes)
 
 	useEffect(() => {
-		dispatch(fetchBlogs()) // Bloglarni backenddan olish
-		const liked = JSON.parse(localStorage.getItem('liked_posts')) || []
-		setLikedPostIds(liked)
+		dispatch(fetchBlogs())
+		dispatch(fetchLikes())
 	}, [dispatch])
 
-	// Faqat liked qilingan postlarni filter qilish
 	const likedPosts = blogs.filter(post => likedPostIds.includes(post.id))
 
 	return (

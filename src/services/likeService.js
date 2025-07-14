@@ -8,7 +8,7 @@ export const getLikedPosts = async () => {
 export const postLike = async postId => {
 	const res = await api.post('/post_like', {
 		post_id: postId,
-		user_id: 1, // bu yerda login bo'lgan user_id bo'lishi kerak
+		user_id: 1, // user id
 		like_time: new Date().toISOString().split('T')[0], // faqat yyyy-mm-dd format
 	})
 	return res.data

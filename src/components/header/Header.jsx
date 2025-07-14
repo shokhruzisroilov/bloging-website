@@ -45,7 +45,7 @@ const Header = () => {
 				<nav className='hidden md:flex gap-8 items-center'>
 					{navLinks.map(({ id, title, href }) => (
 						<NavLink
-							key={id}
+							key={title}
 							to={href}
 							className={({ isActive }) =>
 								`text-sm font-medium transition-all duration-200 pb-1 border-b-2 ${
@@ -132,7 +132,7 @@ const Header = () => {
 					<nav className='flex flex-col gap-4 mt-4'>
 						{navLinks.map(({ id, title, href }) => (
 							<NavLink
-								key={id}
+								key={title}
 								to={href}
 								className='text-[#2F2222] hover:text-[#5D71DD] text-base font-medium'
 								onClick={toggleMenu}
